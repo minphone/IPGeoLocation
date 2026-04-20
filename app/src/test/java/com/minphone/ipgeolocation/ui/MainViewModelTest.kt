@@ -4,6 +4,7 @@ import com.minphone.ipgeolocation.data.model.IpGeolocation
 import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -33,7 +34,7 @@ class MainViewModelTest {
     @Test
     fun `searchIp with empty string sets error`() {
         viewModel.searchIp("")
-        assertEquals("IP address cannot be empty", viewModel.uiState.value.error)
+        assertEquals("IP address or domain cannot be empty", viewModel.uiState.value.error)
     }
 
     @Test
@@ -53,15 +54,29 @@ class MainViewModelTest {
             timezone = "America/Los_Angeles",
             isp = "Google LLC",
             org = "Google LLC",
-            `as` = "AS15169 Google LLC"
+            asName = "AS15169 Google LLC"
         )
         
-        `when`(repository.getIpGeolocation(ip)).thenReturn(Result.success(mockResult))
+        `when`(repository.getIpGeolocation(ip)).thenReturn(flowOf(Result.success(mockResult)))
 
         viewModel.searchIp(ip)
 
         assertEquals(mockResult, viewModel.uiState.value.result)
         assertEquals(null, viewModel.uiState.value.error)
+        assertEquals(false, viewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `searchIp failure call updates state`() = runTest {
+        val ip = "8.8.8.8"
+        val errorMessage = "API call failed"
+        
+        `when`(repository.getIpGeolocation(ip)).thenReturn(flowOf(Result.failure(Exception(errorMessage))))
+
+        viewModel.searchIp(ip)
+
+        assertEquals(null, viewModel.uiState.value.result)
+        assertEquals(errorMessage, viewModel.uiState.value.error)
         assertEquals(false, viewModel.uiState.value.isLoading)
     }
 }

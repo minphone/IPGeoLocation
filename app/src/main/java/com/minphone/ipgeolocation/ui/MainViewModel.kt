@@ -42,11 +42,12 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.value = UiState(isLoading = true)
-            val result = repository.getIpGeolocation(ip)
-            result.onSuccess {
-                _uiState.value = UiState(result = it)
-            }.onFailure {
-                _uiState.value = UiState(error = it.message ?: "An unknown error occurred")
+            repository.getIpGeolocation(ip).collect { result ->
+                result.onSuccess {
+                    _uiState.value = UiState(result = it)
+                }.onFailure {
+                    _uiState.value = UiState(error = it.message ?: "An unknown error occurred")
+                }
             }
         }
     }
