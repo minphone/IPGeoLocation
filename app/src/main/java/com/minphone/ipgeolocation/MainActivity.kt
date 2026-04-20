@@ -12,29 +12,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.minphone.ipgeolocation.data.local.AppDatabase
-import com.minphone.ipgeolocation.data.remote.RetrofitInstance
-import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.minphone.ipgeolocation.ui.MainViewModel
-import com.minphone.ipgeolocation.ui.MainViewModelFactory
 import com.minphone.ipgeolocation.ui.theme.IPGeoLocationTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        val database = AppDatabase.getDatabase(this)
-        val repository = IpGeolocationRepository(database.ipGeolocationDao(), RetrofitInstance.api)
-        val factory = MainViewModelFactory(repository)
-
         enableEdgeToEdge()
         setContent {
             IPGeoLocationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     IpGeoLocationScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        factory = factory
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
@@ -45,9 +38,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun IpGeoLocationScreen(
     modifier: Modifier = Modifier,
-    factory: MainViewModelFactory
+    viewModel: MainViewModel = hiltViewModel()
 ) {
-    val viewModel: MainViewModel = viewModel(factory = factory)
     val uiState by viewModel.uiState.collectAsState()
     var ipInput by remember { mutableStateOf("") }
 

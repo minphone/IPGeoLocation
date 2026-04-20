@@ -11,19 +11,14 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun ipGeolocationDao(): IpGeolocationDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private const val DATABASE_NAME = "ip_geolocation_database"
 
         fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "ip_geolocation_database"
-                ).build()
-                INSTANCE = instance
-                instance
-            }
+            return Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                DATABASE_NAME
+            ).build()
         }
     }
 }

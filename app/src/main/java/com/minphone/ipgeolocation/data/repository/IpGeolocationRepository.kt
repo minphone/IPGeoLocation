@@ -5,8 +5,11 @@ import com.minphone.ipgeolocation.data.model.IpGeolocation
 import com.minphone.ipgeolocation.data.remote.IpApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class IpGeolocationRepository(
+@Singleton
+class IpGeolocationRepository @Inject constructor(
     private val dao: IpGeolocationDao,
     private val apiService: IpApiService
 ) {

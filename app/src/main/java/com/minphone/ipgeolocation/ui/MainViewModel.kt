@@ -1,14 +1,15 @@
 package com.minphone.ipgeolocation.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.minphone.ipgeolocation.data.model.IpGeolocation
 import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class UiState(
     val isLoading: Boolean = false,
@@ -16,7 +17,10 @@ data class UiState(
     val error: String? = null
 )
 
-class MainViewModel(private val repository: IpGeolocationRepository) : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: IpGeolocationRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -45,15 +49,5 @@ class MainViewModel(private val repository: IpGeolocationRepository) : ViewModel
                 _uiState.value = UiState(error = it.message ?: "An unknown error occurred")
             }
         }
-    }
-}
-
-class MainViewModelFactory(private val repository: IpGeolocationRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MainViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

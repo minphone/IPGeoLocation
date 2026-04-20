@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class IpGeolocation(
     @PrimaryKey
     @SerializedName("query")
-    val query: String, // The IP address
+    val query: String,
     val status: String?,
     val country: String?,
     val countryCode: String?,
