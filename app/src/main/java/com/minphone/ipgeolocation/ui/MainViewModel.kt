@@ -2,8 +2,9 @@ package com.minphone.ipgeolocation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.minphone.ipgeolocation.data.model.IpGeolocation
-import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
+import com.minphone.ipgeolocation.model.IpGeolocation
+import com.minphone.ipgeolocation.repository.IpGeolocationRepository
+import com.minphone.ipgeolocation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,16 +28,16 @@ class MainViewModel @Inject constructor(
 
     fun searchIp(ip: String) {
         if (ip.isBlank()) {
-            _uiState.value = UiState(error = "IP address or domain cannot be empty")
+            _uiState.value = UiState(error = Constants.ERROR_EMPTY_IP)
             return
         }
         
         // Basic validation: IP address or Domain name
-        val ipPattern = "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}\$".toRegex()
-        val domainPattern = "^([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}\$".toRegex()
+        val ipPattern = Constants.IP_PATTERN.toRegex()
+        val domainPattern = Constants.DOMAIN_PATTERN.toRegex()
         
-        if (!ip.matches(ipPattern) && !ip.matches(domainPattern) && ip != "check") {
-            _uiState.value = UiState(error = "Invalid IP address or domain format")
+        if (!ip.matches(ipPattern) && !ip.matches(domainPattern) && ip != Constants.CHECK_COMMAND) {
+            _uiState.value = UiState(error = Constants.ERROR_INVALID_IP)
             return
         }
 
@@ -46,7 +47,7 @@ class MainViewModel @Inject constructor(
                 result.onSuccess {
                     _uiState.value = UiState(result = it)
                 }.onFailure {
-                    _uiState.value = UiState(error = it.message ?: "An unknown error occurred")
+                    _uiState.value = UiState(error = it.message ?: Constants.ERROR_UNKNOWN)
                 }
             }
         }

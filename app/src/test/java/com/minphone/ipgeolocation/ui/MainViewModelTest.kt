@@ -1,7 +1,8 @@
 package com.minphone.ipgeolocation.ui
 
-import com.minphone.ipgeolocation.data.model.IpGeolocation
-import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
+import com.minphone.ipgeolocation.model.IpGeolocation
+import com.minphone.ipgeolocation.repository.IpGeolocationRepository
+import com.minphone.ipgeolocation.util.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -34,7 +35,13 @@ class MainViewModelTest {
     @Test
     fun `searchIp with empty string sets error`() {
         viewModel.searchIp("")
-        assertEquals("IP address or domain cannot be empty", viewModel.uiState.value.error)
+        assertEquals(Constants.ERROR_EMPTY_IP, viewModel.uiState.value.error)
+    }
+
+    @Test
+    fun `searchIp with invalid format sets error`() {
+        viewModel.searchIp("invalid-ip")
+        assertEquals(Constants.ERROR_INVALID_IP, viewModel.uiState.value.error)
     }
 
     @Test
@@ -54,7 +61,8 @@ class MainViewModelTest {
             timezone = "America/Los_Angeles",
             isp = "Google LLC",
             org = "Google LLC",
-            asName = "AS15169 Google LLC"
+            asName = "AS15169 Google LLC",
+            timestamp = System.currentTimeMillis()
         )
         
         `when`(repository.getIpGeolocation(ip)).thenReturn(flowOf(Result.success(mockResult)))

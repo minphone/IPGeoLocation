@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.minphone.ipgeolocation.ui.MainViewModel
@@ -54,7 +55,7 @@ fun IpGeoLocationScreen(
         OutlinedTextField(
             value = ipInput,
             onValueChange = { ipInput = it },
-            label = { Text("IP Address") },
+            label = { Text(stringResource(R.string.label_ip_address)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -62,7 +63,7 @@ fun IpGeoLocationScreen(
             onClick = { viewModel.searchIp(ipInput) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Search")
+            Text(stringResource(R.string.button_search))
         }
 
         if (uiState.isLoading) {
@@ -70,7 +71,10 @@ fun IpGeoLocationScreen(
         }
 
         uiState.error?.let {
-            Text(text = "Error: $it", color = MaterialTheme.colorScheme.error)
+            Text(
+                text = stringResource(R.string.error_message, it),
+                color = MaterialTheme.colorScheme.error
+            )
         }
 
         uiState.result?.let { result ->
@@ -79,19 +83,39 @@ fun IpGeoLocationScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "IP: ${result.query}", style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = stringResource(R.string.result_ip, result.query),
+                        style = MaterialTheme.typography.titleLarge
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = "Status: ${result.status}")
-                    Text(text = "Country: ${result.country} (${result.countryCode})")
-                    Text(text = "Region: ${result.regionName}")
-                    Text(text = "City: ${result.city}")
-                    Text(text = "ZIP: ${result.zip}")
-                    Text(text = "Lat: ${result.lat}, Lon: ${result.lon}")
-                    Text(text = "Timezone: ${result.timezone}")
-                    Text(text = "ISP: ${result.isp}")
-                    Text(text = "Org: ${result.org}")
-                    Text(text = "AS: ${result.asName}")
-                    Text(text = "Last updated: ${java.util.Date(result.timestamp)}")
+                    Text(text = stringResource(R.string.result_status, result.status))
+                    Text(
+                        text = stringResource(
+                            R.string.result_country,
+                            result.country,
+                            result.countryCode
+                        )
+                    )
+                    Text(text = stringResource(R.string.result_region, result.regionName))
+                    Text(text = stringResource(R.string.result_city, result.city))
+                    Text(text = stringResource(R.string.result_zip, result.zip))
+                    Text(
+                        text = stringResource(
+                            R.string.result_lat_lon,
+                            result.lat.toString(),
+                            result.lon.toString()
+                        )
+                    )
+                    Text(text = stringResource(R.string.result_timezone, result.timezone))
+                    Text(text = stringResource(R.string.result_isp, result.isp))
+                    Text(text = stringResource(R.string.result_org, result.org))
+                    Text(text = stringResource(R.string.result_as, result.asName))
+                    Text(
+                        text = stringResource(
+                            R.string.result_last_updated,
+                            java.util.Date(result.timestamp).toString()
+                        )
+                    )
                 }
             }
         }

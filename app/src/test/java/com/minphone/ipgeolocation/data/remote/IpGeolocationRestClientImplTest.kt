@@ -1,7 +1,8 @@
 package com.minphone.ipgeolocation.data.remote
 
-import com.minphone.ipgeolocation.data.model.IpGeolocation
-import com.minphone.ipgeolocation.data.repository.restClient.IpGeolocationRestClientImpl
+import com.minphone.ipgeolocation.remote.IpApiService
+import com.minphone.ipgeolocation.remote.response.IpGeolocationResponse
+import com.minphone.ipgeolocation.repository.restClient.IpGeolocationRestClientImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -27,7 +28,7 @@ class IpGeolocationRestClientImplTest {
     @Test
     fun `getIpGeolocation returns successful response`() = runTest {
         val ip = "8.8.8.8"
-        val expectedResult = IpGeolocation(
+        val expectedResult = IpGeolocationResponse(
             query = ip,
             status = "success",
             country = "United States",

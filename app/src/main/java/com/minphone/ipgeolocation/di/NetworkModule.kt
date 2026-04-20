@@ -1,6 +1,7 @@
 package com.minphone.ipgeolocation.di
 
-import com.minphone.ipgeolocation.data.remote.IpApiService
+import com.minphone.ipgeolocation.remote.IpApiService
+import com.minphone.ipgeolocation.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    private const val BASE_URL = "http://ip-api.com/"
 
     @Provides
     @Singleton
@@ -37,7 +36,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

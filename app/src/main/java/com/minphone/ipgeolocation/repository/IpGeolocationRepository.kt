@@ -1,6 +1,6 @@
-package com.minphone.ipgeolocation.data.repository
+package com.minphone.ipgeolocation.repository
 
-import com.minphone.ipgeolocation.data.model.IpGeolocation
+import com.minphone.ipgeolocation.model.IpGeolocation
 import kotlinx.coroutines.flow.Flow
 
 interface IpGeolocationRepository {

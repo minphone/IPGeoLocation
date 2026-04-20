@@ -1,9 +1,9 @@
 package com.minphone.ipgeolocation.di
 
-import com.minphone.ipgeolocation.data.repository.restClient.IpGeolocationRestClient
-import com.minphone.ipgeolocation.data.repository.restClient.IpGeolocationRestClientImpl
-import com.minphone.ipgeolocation.data.repository.IpGeolocationRepository
-import com.minphone.ipgeolocation.data.repository.IpGeolocationRepositoryImpl
+import com.minphone.ipgeolocation.repository.restClient.IpGeolocationRestClient
+import com.minphone.ipgeolocation.repository.restClient.IpGeolocationRestClientImpl
+import com.minphone.ipgeolocation.repository.IpGeolocationRepository
+import com.minphone.ipgeolocation.repository.IpGeolocationRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

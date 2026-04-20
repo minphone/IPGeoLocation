@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">IPGeoLocation</string>
+    <string name="label_ip_address">IP Address</string>
+    <string name="button_search">Search</string>
+    <string name="error_message">Error: %1$s</string>
+    <string name="result_ip">IP: %1$s</string>
+    <string name="result_status">Status: %1$s</string>
+    <string name="result_country">Country: %1$s (%2$s)</string>
+    <string name="result_region">Region: %1$s</string>
+    <string name="result_city">City: %1$s</string>
+    <string name="result_zip">ZIP: %1$s</string>
+    <string name="result_lat_lon">Lat: %1$s, Lon: %2$s</string>
+    <string name="result_timezone">Timezone: %1$s</string>
+    <string name="result_isp">ISP: %1$s</string>
+    <string name="result_org">Org: %1$s</string>
+    <string name="result_as">AS: %1$s</string>
+    <string name="result_last_updated">Last updated: %1$s</string>
 </resources>
